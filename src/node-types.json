@@ -28,6 +28,10 @@
         "named": true
       },
       {
+        "type": "has_attr",
+        "named": true
+      },
+      {
         "type": "hpath",
         "named": true
       },
@@ -150,10 +154,6 @@
             "named": true
           },
           {
-            "type": "select",
-            "named": true
-          },
-          {
             "type": "spath",
             "named": true
           },
@@ -180,86 +180,6 @@
             "named": true
           },
           {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "hpath",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "indented_string",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "let_attrset",
-            "named": true
-          },
-          {
-            "type": "list",
-            "named": true
-          },
-          {
-            "type": "parenthesized",
-            "named": true
-          },
-          {
-            "type": "path",
-            "named": true
-          },
-          {
-            "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "uri",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "assert",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "app",
-            "named": true
-          },
-          {
-            "type": "assert",
-            "named": true
-          },
-          {
-            "type": "attrset",
-            "named": true
-          },
-          {
             "type": "binary",
             "named": true
           },
@@ -268,7 +188,7 @@
             "named": true
           },
           {
-            "type": "function",
+            "type": "has_attr",
             "named": true
           },
           {
@@ -280,19 +200,11 @@
             "named": true
           },
           {
-            "type": "if",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
           {
             "type": "integer",
-            "named": true
-          },
-          {
-            "type": "let",
             "named": true
           },
           {
@@ -334,9 +246,21 @@
           {
             "type": "uri",
             "named": true
-          },
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "assert",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
           {
-            "type": "with",
+            "type": "_expression",
             "named": true
           }
         ]
@@ -474,6 +398,10 @@
             "named": true
           },
           {
+            "type": "has_attr",
+            "named": true
+          },
+          {
             "type": "hpath",
             "named": true
           },
@@ -592,10 +520,6 @@
             "named": false
           },
           {
-            "type": "?",
-            "named": false
-          },
-          {
             "type": "||",
             "named": false
           }
@@ -619,6 +543,10 @@
           },
           {
             "type": "float",
+            "named": true
+          },
+          {
+            "type": "has_attr",
             "named": true
           },
           {
@@ -768,11 +696,53 @@
         "required": true,
         "types": [
           {
-            "type": "app",
+            "type": "_expression",
             "named": true
-          },
+          }
+        ]
+      },
+      "formals": {
+        "multiple": false,
+        "required": false,
+        "types": [
           {
-            "type": "assert",
+            "type": "formals",
+            "named": true
+          }
+        ]
+      },
+      "universal": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "has_attr",
+    "named": true,
+    "fields": {
+      "attrpath": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "attrpath",
+            "named": true
+          }
+        ]
+      },
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "app",
             "named": true
           },
           {
@@ -788,7 +758,7 @@
             "named": true
           },
           {
-            "type": "function",
+            "type": "has_attr",
             "named": true
           },
           {
@@ -800,19 +770,11 @@
             "named": true
           },
           {
-            "type": "if",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
           {
             "type": "integer",
-            "named": true
-          },
-          {
-            "type": "let",
             "named": true
           },
           {
@@ -853,30 +815,6 @@
           },
           {
             "type": "uri",
-            "named": true
-          },
-          {
-            "type": "with",
-            "named": true
-          }
-        ]
-      },
-      "formals": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "formals",
-            "named": true
-          }
-        ]
-      },
-      "universal": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
             "named": true
           }
         ]
@@ -1023,95 +961,7 @@
         "required": true,
         "types": [
           {
-            "type": "app",
-            "named": true
-          },
-          {
-            "type": "assert",
-            "named": true
-          },
-          {
-            "type": "attrset",
-            "named": true
-          },
-          {
-            "type": "binary",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "hpath",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if",
-            "named": true
-          },
-          {
-            "type": "indented_string",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "let",
-            "named": true
-          },
-          {
-            "type": "let_attrset",
-            "named": true
-          },
-          {
-            "type": "list",
-            "named": true
-          },
-          {
-            "type": "parenthesized",
-            "named": true
-          },
-          {
-            "type": "path",
-            "named": true
-          },
-          {
-            "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "unary",
-            "named": true
-          },
-          {
-            "type": "uri",
-            "named": true
-          },
-          {
-            "type": "with",
+            "type": "_expression",
             "named": true
           }
         ]
@@ -1317,10 +1167,6 @@
             "named": true
           },
           {
-            "type": "select",
-            "named": true
-          },
-          {
             "type": "spath",
             "named": true
           },
@@ -1458,6 +1304,10 @@
             "named": true
           },
           {
+            "type": "has_attr",
+            "named": true
+          },
+          {
             "type": "hpath",
             "named": true
           },
@@ -1540,95 +1390,7 @@
         "required": true,
         "types": [
           {
-            "type": "app",
-            "named": true
-          },
-          {
-            "type": "assert",
-            "named": true
-          },
-          {
-            "type": "attrset",
-            "named": true
-          },
-          {
-            "type": "binary",
-            "named": true
-          },
-          {
-            "type": "float",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "hpath",
-            "named": true
-          },
-          {
-            "type": "identifier",
-            "named": true
-          },
-          {
-            "type": "if",
-            "named": true
-          },
-          {
-            "type": "indented_string",
-            "named": true
-          },
-          {
-            "type": "integer",
-            "named": true
-          },
-          {
-            "type": "let",
-            "named": true
-          },
-          {
-            "type": "let_attrset",
-            "named": true
-          },
-          {
-            "type": "list",
-            "named": true
-          },
-          {
-            "type": "parenthesized",
-            "named": true
-          },
-          {
-            "type": "path",
-            "named": true
-          },
-          {
-            "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "unary",
-            "named": true
-          },
-          {
-            "type": "uri",
-            "named": true
-          },
-          {
-            "type": "with",
+            "type": "_expression",
             "named": true
           }
         ]

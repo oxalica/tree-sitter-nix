@@ -1,24 +1,3 @@
-const PREC = {
-  impl: 1,
-  or: 2,
-  and: 3,
-  eq: 4,
-  neq: 4,
-  '<': 5,
-  '>': 5,
-  leq: 5,
-  geq: 5,
-  update: 6,
-  not: 7,
-  '+': 8,
-  '-': 8,
-  '*': 9,
-  '/': 9,
-  concat: 10,
-  '?': 11,
-  negate: 12
-}
-
 module.exports = grammar({
   name: 'nix',
 
@@ -41,12 +20,29 @@ module.exports = grammar({
 
   word: $ => $.keyword,
 
+  precedences: $ => [
+    [
+      $.app,
+      'unary_negate',
+      'binary_has_attr',
+      'binary_concat',
+      'binary_times',
+      'binary_plus',
+      'unary_not',
+      'binary_update',
+      'binary_compare',
+      'binary_equal',
+      'binary_and',
+      'binary_or',
+      'binary_imply',
+    ]
+  ],
+
   conflicts: $ => [
   ],
 
   rules: {
     source_expression: $ => field('expression', $._expression),
-    _expression: $ => $._expr_function,
 
     // Keywords go before identifiers to let them take precedence when both are expected.
     // Test `let missing value (last)` would fail without this.
@@ -61,55 +57,53 @@ module.exports = grammar({
     spath: $ => /<[a-zA-Z0-9\._\-\+]+(\/[a-zA-Z0-9\._\-\+]+)*>/,
     uri: $ => /[a-zA-Z][a-zA-Z0-9\+\-\.]*:[a-zA-Z0-9%\/\?:@\&=\+\$,\-_\.\!\~\*\']+/,
 
-    _expr_function: $ => choice(
+    _expression: $ => choice(
       $.function,
       $.assert,
       $.with,
       $.let,
-      $._expr_if
+      $.if,
+      $._operator_expression,
     ),
 
     function: $ => choice(
-      seq(field('universal', $.identifier), ':', field('body', $._expr_function)),
-      seq(field('formals', $.formals), ":", field('body', $._expr_function)),
-      seq(field('formals', $.formals), '@', field('universal', $.identifier), ':', field('body', $._expr_function)),
-      seq(field('universal', $.identifier), '@', field('formals', $.formals), ':', field('body', $._expr_function)),
+      seq(field('universal', $.identifier), ':', field('body', $._expression)),
+      seq(field('formals', $.formals), ":", field('body', $._expression)),
+      seq(field('formals', $.formals), '@', field('universal', $.identifier), ':', field('body', $._expression)),
+      seq(field('universal', $.identifier), '@', field('formals', $.formals), ':', field('body', $._expression)),
     ),
 
     formals: $ => choice(
       seq('{', '}'),
-      seq('{', commaSep1(field('formal', $.formal)), '}'),
-      seq('{', commaSep1(field('formal', $.formal)), ',', field('ellipses', $.ellipses), '}'),
+      seq('{', sep1(field('formal', $.formal), ','), '}'),
+      seq('{', sep1(field('formal', $.formal), ','), ',', field('ellipses', $.ellipses), '}'),
       seq('{', field('ellipses', $.ellipses), '}'),
     ),
     formal: $ => seq(field("name", $.identifier), optional(seq('?', field('default', $._expression)))),
     ellipses: $ => '...',
 
-    assert: $ => seq('assert', field('condition', $._expression), ';', field('body', $._expr_function)),
-    with: $ => seq('with', field('environment', $._expression), ';', field('body', $._expr_function)),
-    let: $ => seq('let', optional($._binds), 'in', field('body', $._expr_function)),
-
-    _expr_if: $ => choice(
-      $.if,
-      $._expr_op
-    ),
+    assert: $ => seq('assert', field('condition', $._expression), ';', field('body', $._expression)),
+    with: $ => seq('with', field('environment', $._expression), ';', field('body', $._expression)),
+    let: $ => seq('let', optional($._binds), 'in', field('body', $._expression)),
 
     if: $ => seq('if', field('condition', $._expression), 'then', field('consequence', $._expression), 'else', field('alternative', $._expression)),
 
-    _expr_op: $ => choice(
+    _operator_expression: $ => choice(
       $.unary,
       $.binary,
-      $._expr_app
+      $.has_attr,
+      $.app,
+      $._select_expression
     ),
 
     unary: $ => choice(
       ...[
-        ['!', PREC.not],
-        ['-', PREC.negate],
+        ['!', 'unary_not'],
+        ['-', 'unary_negate'],
       ].map(([operator, precedence]) =>
         prec(precedence, seq(
           field('operator', operator),
-          field('argument', $._expr_op)
+          field('argument', $._operator_expression)
         ))
       )
     ),
@@ -117,56 +111,57 @@ module.exports = grammar({
     binary: $ => choice(
       // left assoc.
       ...[
-        ['==', PREC.eq],
-        ['!=', PREC.neq],
-        ['<', PREC['<']],
-        ['<=', PREC.leq],
-        ['>', PREC['>']],
-        ['>=', PREC.geq],
-        ['&&', PREC.and],
-        ['||', PREC.or],
-        ['?', PREC['?']],
-        ['+', PREC['+']],
-        ['-', PREC['-']],
-        ['*', PREC['*']],
-        ['/', PREC['/']],
+        ['==', 'binary_equal'],
+        ['!=', 'binary_equal'],
+        ['<',  'binary_compare'],
+        ['<=', 'binary_compare'],
+        ['>',  'binary_compare'],
+        ['>=', 'binary_compare'],
+        ['&&', 'binary_and'],
+        ['||', 'binary_or'],
+        ['+',  'binary_plus'],
+        ['-',  'binary_plus'],
+        ['*',  'binary_times'],
+        ['/',  'binary_times'],
       ].map(([operator, precedence]) =>
       prec.left(precedence, seq(
-        field('left', $._expr_op),
+        field('left', $._operator_expression),
         field('operator', operator),
-        field('right', $._expr_op)
+        field('right', $._operator_expression)
       ))),
       // right assoc.
       ...[
-        ['->', PREC.impl],
-        ['//', PREC.update],
-        ['++', PREC.concat],
+        ['->', 'binary_imply'],
+        ['//', 'binary_update'],
+        ['++', 'binary_concat'],
       ].map(([operator, precedence]) =>
       prec.right(precedence, seq(
-        field('left', $._expr_op),
+        field('left', $._operator_expression),
         field('operator', operator),
-        field('right', $._expr_op)
+        field('right', $._operator_expression)
       )))
     ),
 
-    _expr_app: $ => choice(
-      $.app,
-      $._expr_select
-    ),
+    has_attr: $ => prec.left('binary_has_attr', seq(
+      field('expression', $._operator_expression),
+      '?',
+      field('attrpath', $.attrpath)
+    )),
 
-    app: $ => seq(field('function', $._expr_app), field('argument', $._expr_select)),
+    app: $ => seq(field('function', $._operator_expression), field('argument', $._primary_expression)),
 
-    _expr_select: $ => choice(
+    _select_expression: $ => choice(
       $.select,
-      $._expr_simple
+      $._primary_expression
+    ),
+    select: $ => seq(
+      field('expression', $._primary_expression),
+      '.',
+      field('attrpath', $.attrpath),
+      optional(seq('or', field('default', $._primary_expression)))
     ),
 
-    select: $ => choice(
-      seq(field('expression', $._expr_simple), '.', field('attrpath', $.attrpath)),
-      seq(field('expression', $._expr_simple), '.', field('attrpath', $.attrpath), 'or', field('default', $._expr_select)),
-    ),
-
-    _expr_simple: $ => choice(
+    _primary_expression: $ => choice(
       $.identifier,
       $.integer,
       $.float,
@@ -237,7 +232,7 @@ module.exports = grammar({
 
     interpolation: $ => seq('${', field('expression', $._expression), '}'),
 
-    list: $ => seq('[', repeat(field('element', $._expr_select)), ']'),
+    list: $ => seq('[', repeat(field('element', $._select_expression)), ']'),
 
     comment: $ => token(choice(
       seq('#', /.*/),
@@ -253,19 +248,6 @@ module.exports = grammar({
   },
 });
 
-
-function sep(rule, separator) {
-  return optional(sep1(rule, separator));
-}
-
 function sep1(rule, separator) {
   return seq(rule, repeat(seq(separator, rule)));
-}
-
-function commaSep1(rule) {
-  return sep1(rule, ',');
-}
-
-function commaSep(rule) {
-  return optional(commaSep1(rule));
 }

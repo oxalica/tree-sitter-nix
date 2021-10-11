@@ -380,3 +380,23 @@ parens
 (source_expression
   (parenthesized
     (integer)))
+
+================================================================================
+has attr
+================================================================================
+
+foo ? field ? bar."baz".${bax}
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (has_attr
+    (has_attr
+      (identifier)
+      (attrpath
+        (attr_identifier)))
+    (attrpath
+      (attr_identifier)
+      (string)
+      (interpolation
+        (identifier)))))
