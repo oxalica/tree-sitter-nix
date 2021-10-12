@@ -1,0 +1,318 @@
+================================================================================
+nix path
+================================================================================
+
+[
+  <nixpkgs>
+  <nixpkgs/foo/bar/baz.nix>
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path)
+    (path)))
+
+================================================================================
+absolute path
+================================================================================
+
+[
+  /1
+  /foo/./bar/../baz
+  /.
+  /..
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path)
+    (path)
+    (path)
+    (path)))
+
+================================================================================
+relative path
+================================================================================
+
+[
+  1/2
+  ./foo
+  ./..
+  ../.
+  foo/./bar/../baz
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path)
+    (path)
+    (path)
+    (path)
+    (path)))
+
+================================================================================
+absolute path interpolation
+================================================================================
+
+[
+  /${foo}
+  /a${foo}
+  /a/${foo}
+  /a/b${foo}
+  /a/b${foo}c
+  /a/b${foo}c/d
+  /a/b${foo}/c
+  /a/b${foo}/${bar}b/${baz}/c${bux}b/c${buz}
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier)))))
+
+================================================================================
+relative path interpolation
+================================================================================
+
+[
+  ./${foo}
+  ./a${foo}
+  ./a/${foo}
+  ./a/b${foo}
+  a/b${foo}c
+  a/b${foo}c/d
+  a/b${foo}/c
+  a/b${foo}/${bar}b/${baz}/c${bux}b/c${buz}
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier)))))
+
+================================================================================
+home path interpolation
+================================================================================
+
+[
+  ~/${foo}
+  ~/a${foo}
+  ~/a/${foo}
+  ~/a/b${foo}
+  ~/a/b${foo}c
+  ~/a/b${foo}c/d
+  ~/a/b${foo}/c
+  ~/a/b${foo}/${bar}b/${baz}/c${bux}b/c${buz}
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier)))
+    (path
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier)))))
+
+================================================================================
+path and division
+================================================================================
+
+[
+  (1/2)
+  (1 /2)
+  (1/ 2)
+  (1 / 2)
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (parenthesized
+      (path))
+    (parenthesized
+      (app
+        (integer)
+        (path)))
+    (parenthesized
+      (binary
+        (integer)
+        (integer)))
+    (parenthesized
+      (binary
+        (integer)
+        (integer)))))
+
+================================================================================
+path and update
+================================================================================
+
+[
+  (1//2)
+  (1 //2)
+  (1// 2)
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (parenthesized
+      (binary
+        (integer)
+        (integer)))
+    (parenthesized
+      (binary
+        (integer)
+        (integer)))
+    (parenthesized
+      (binary
+        (integer)
+        (integer)))))
+
+================================================================================
+path trailing slash
+================================================================================
+
+[
+  /foo/
+  ./foo/
+  ~/bar/baz/
+  /${foo}/
+  /${foo}/bar/
+  /${foo}/bar/${baz}a/
+]
+
+--------------------------------------------------------------------------------
+
+(source_expression
+  (list
+    (path
+      (path_trailing_slash))
+    (path
+      (path_trailing_slash))
+    (path
+      (path_trailing_slash))
+    (path
+      (interpolation
+        (identifier))
+      (path_trailing_slash))
+    (path
+      (interpolation
+        (identifier))
+      (path_trailing_slash))
+    (path
+      (interpolation
+        (identifier))
+      (interpolation
+        (identifier))
+      (path_trailing_slash))))
+
+================================================================================
+path root is invalid
+================================================================================
+
+/
+
+--------------------------------------------------------------------------------
+
+(ERROR)

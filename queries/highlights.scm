@@ -1,15 +1,15 @@
 (comment) @comment
 
 [
-  "if" 
+  "if"
   "then"
   "else"
   "let"
   "inherit"
   "in"
   "rec"
-  "with" 
-  "assert" 
+  "with"
+  "assert"
 ] @keyword
 
 ((identifier) @variable.builtin
@@ -25,11 +25,8 @@
   (indented_string)
 ] @string
 
-[
-  (path)
-  (hpath)
-  (spath)
-] @string.special.path
+(path) @string.special.path
+(path_trailing_slash) @error
 
 (uri) @string.special.uri
 

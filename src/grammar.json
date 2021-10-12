@@ -26,21 +26,111 @@
       "type": "PATTERN",
       "value": "(([1-9][0-9]*\\.[0-9]*)|(0?\\.[0-9]+))([Ee][+-]?[0-9]+)?"
     },
-    "path": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z0-9\\._\\-\\+]*(\\/[a-zA-Z0-9\\._\\-\\+]+)+\\/?"
-    },
-    "hpath": {
-      "type": "PATTERN",
-      "value": "\\~(\\/[a-zA-Z0-9\\._\\-\\+]+)+\\/?"
-    },
-    "spath": {
-      "type": "PATTERN",
-      "value": "<[a-zA-Z0-9\\._\\-\\+]+(\\/[a-zA-Z0-9\\._\\-\\+]+)*>"
-    },
     "uri": {
       "type": "PATTERN",
       "value": "[a-zA-Z][a-zA-Z0-9\\+\\-\\.]*:[a-zA-Z0-9%\\/\\?:@\\&=\\+\\$,\\-_\\.\\!\\~\\*\\']+"
+    },
+    "_nix_path": {
+      "type": "PATTERN",
+      "value": "<[a-zA-Z0-9\\._\\-\\+]+(\\/[a-zA-Z0-9\\._\\-\\+]+)*>"
+    },
+    "_path_start": {
+      "type": "PATTERN",
+      "value": "(\\~|[a-zA-Z0-9\\._\\-\\+]+)?\\/[a-zA-Z0-9\\._\\-\\+]+"
+    },
+    "_path_start_into_interpolation": {
+      "type": "PATTERN",
+      "value": "(\\~|[a-zA-Z0-9\\._\\-\\+]+)?\\/\\$\\{"
+    },
+    "_path": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_path_start"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "path_first_interpolation"
+              },
+              "named": true,
+              "value": "interpolation"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "interpolation_immediate"
+                },
+                "named": true,
+                "value": "interpolation"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_path_fragment"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "path_trailing_slash"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "path_first_interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_path_start_into_interpolation"
+        },
+        {
+          "type": "FIELD",
+          "name": "expression",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
+    "path": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_nix_path"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_path"
+        }
+      ]
     },
     "_expression": {
       "type": "CHOICE",
@@ -1239,14 +1329,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "hpath"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "spath"
-        },
-        {
-          "type": "SYMBOL",
           "name": "uri"
         },
         {
@@ -1392,8 +1474,13 @@
                 "name": "_string_fragment"
               },
               {
-                "type": "SYMBOL",
-                "name": "interpolation"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "interpolation_immediate"
+                },
+                "named": true,
+                "value": "interpolation"
               },
               {
                 "type": "SYMBOL",
@@ -1432,8 +1519,13 @@
                 "name": "_indented_string_fragment"
               },
               {
-                "type": "SYMBOL",
-                "name": "interpolation"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "interpolation_immediate"
+                },
+                "named": true,
+                "value": "interpolation"
               },
               {
                 "type": "ALIAS",
@@ -1714,6 +1806,30 @@
         }
       ]
     },
+    "interpolation_immediate": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "${"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "expression",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "}"
+        }
+      ]
+    },
     "list": {
       "type": "SEQ",
       "members": [
@@ -1864,6 +1980,14 @@
     {
       "type": "SYMBOL",
       "name": "_indented_string_fragment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_path_fragment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "path_trailing_slash"
     }
   ],
   "inline": [],

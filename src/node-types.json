@@ -32,10 +32,6 @@
         "named": true
       },
       {
-        "type": "hpath",
-        "named": true
-      },
-      {
         "type": "identifier",
         "named": true
       },
@@ -80,10 +76,6 @@
         "named": true
       },
       {
-        "type": "spath",
-        "named": true
-      },
-      {
         "type": "string",
         "named": true
       },
@@ -118,10 +110,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -151,10 +139,6 @@
           },
           {
             "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -192,10 +176,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -229,10 +209,6 @@
           },
           {
             "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -402,10 +378,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -439,10 +411,6 @@
           },
           {
             "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -550,10 +518,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -587,10 +551,6 @@
           },
           {
             "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -762,10 +722,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -799,10 +755,6 @@
           },
           {
             "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -1009,10 +961,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -1049,10 +997,6 @@
             "named": true
           },
           {
-            "type": "spath",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -1078,6 +1022,25 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "interpolation",
+          "named": true
+        },
+        {
+          "type": "path_trailing_slash",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1131,10 +1094,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -1164,10 +1123,6 @@
           },
           {
             "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -1193,10 +1148,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -1226,10 +1177,6 @@
           },
           {
             "type": "rec_attrset",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -1308,10 +1255,6 @@
             "named": true
           },
           {
-            "type": "hpath",
-            "named": true
-          },
-          {
             "type": "identifier",
             "named": true
           },
@@ -1345,10 +1288,6 @@
           },
           {
             "type": "select",
-            "named": true
-          },
-          {
-            "type": "spath",
             "named": true
           },
           {
@@ -1552,10 +1491,6 @@
     "named": true
   },
   {
-    "type": "hpath",
-    "named": true
-  },
-  {
     "type": "identifier",
     "named": true
   },
@@ -1584,16 +1519,12 @@
     "named": false
   },
   {
-    "type": "path",
+    "type": "path_trailing_slash",
     "named": true
   },
   {
     "type": "rec",
     "named": false
-  },
-  {
-    "type": "spath",
-    "named": true
   },
   {
     "type": "then",

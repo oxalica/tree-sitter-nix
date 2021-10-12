@@ -1,8 +1,11 @@
 #include <tree_sitter/parser.h>
+#include <inttypes.h>
 
 enum TokenType {
   STRING_FRAGMENT,
   INDENTED_STRING_FRAGMENT,
+  PATH_FRAGMENT,
+  PATH_TRAILING_SLASH,
 };
 
 static void advance(TSLexer *lexer) {
@@ -76,6 +79,50 @@ static bool scan_indented_string_fragment(TSLexer *lexer) {
   }
 }
 
+static bool is_valid_path_char(int32_t c) {
+  return 'a' <= c && c <= 'z' ||
+    'A' <= c && c <= 'Z' ||
+    '0' <= c && c <= '9' ||
+    c == '.' || c == '_' || c == '+' || c == '-';
+}
+
+static bool scan_path_fragment(TSLexer *lexer) {
+  bool has_content = false;
+  lexer->result_symbol = PATH_FRAGMENT;
+
+  // Process '/' only at the start.
+  // If '/' follows '${' or any valid path character, itself is a valid path fragment.
+  // Otherwise, it is the last character of a path, which is a trailing slash.
+  if (lexer->lookahead == '/') {
+    advance(lexer);
+    lexer->mark_end(lexer);
+    if (lexer->lookahead == '$') {
+      advance(lexer);
+      if (lexer->lookahead == '{') {
+        return true;
+      }
+      lexer->result_symbol = PATH_TRAILING_SLASH;
+      return true;
+    } else if (!is_valid_path_char(lexer->lookahead)) {
+      lexer->result_symbol = PATH_TRAILING_SLASH;
+      return true;
+    }
+
+    // A valid path character follows. Continue processing.
+    has_content = true;
+  }
+
+  for (;; has_content = true) {
+    lexer->mark_end(lexer);
+    if (is_valid_path_char(lexer->lookahead)) {
+      advance(lexer);
+    } else {
+      // Here we stop on '${' and '/', which can be handled in parse or next call to `scan_path_fragment`.
+      return has_content;
+    }
+  }
+}
+
 void *tree_sitter_nix_external_scanner_create() {
   return NULL;
 }
@@ -94,6 +141,8 @@ bool tree_sitter_nix_external_scanner_scan(void *payload, TSLexer *lexer,
     return scan_string_fragment(lexer);
   } else if (valid_symbols[INDENTED_STRING_FRAGMENT]) {
     return scan_indented_string_fragment(lexer);
+  } else if (valid_symbols[PATH_FRAGMENT] || valid_symbols[PATH_TRAILING_SLASH]) {
+    return scan_path_fragment(lexer);
   }
 
   return false;

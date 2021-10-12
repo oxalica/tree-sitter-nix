@@ -16,6 +16,8 @@ module.exports = grammar({
   externals: $ => [
     $._string_fragment,
     $._indented_string_fragment,
+    $._path_fragment,
+    $.path_trailing_slash,
   ],
 
   word: $ => $.keyword,
@@ -52,10 +54,37 @@ module.exports = grammar({
     identifier: $ => /[a-zA-Z_][a-zA-Z0-9_\'\-]*/,
     integer: $ => /[0-9]+/,
     float: $ => /(([1-9][0-9]*\.[0-9]*)|(0?\.[0-9]+))([Ee][+-]?[0-9]+)?/,
-    path: $ => /[a-zA-Z0-9\._\-\+]*(\/[a-zA-Z0-9\._\-\+]+)+\/?/,
-    hpath: $ => /\~(\/[a-zA-Z0-9\._\-\+]+)+\/?/,
-    spath: $ => /<[a-zA-Z0-9\._\-\+]+(\/[a-zA-Z0-9\._\-\+]+)*>/,
     uri: $ => /[a-zA-Z][a-zA-Z0-9\+\-\.]*:[a-zA-Z0-9%\/\?:@\&=\+\$,\-_\.\!\~\*\']+/,
+
+    _nix_path: $ => /<[a-zA-Z0-9\._\-\+]+(\/[a-zA-Z0-9\._\-\+]+)*>/,
+
+    // We need to special case '<segment>/${' since `<segment>/<not segment>` should not start an path.
+    // So we have to split into two cases instead of using a single pattern `<segment>/` as start,
+    // in order to parse `1/ 2` as `1 / 2`.
+    // Test 'path and division' covers this.
+    _path_start: $ => /(\~|[a-zA-Z0-9\._\-\+]+)?\/[a-zA-Z0-9\._\-\+]+/,
+    _path_start_into_interpolation: $ => /(\~|[a-zA-Z0-9\._\-\+]+)?\/\$\{/,
+    _path: $ => seq(
+      choice(
+        $._path_start,
+        alias($.path_first_interpolation, $.interpolation)
+      ),
+      repeat(choice(
+        alias($.interpolation_immediate, $.interpolation),
+        $._path_fragment,
+      )),
+      optional($.path_trailing_slash)
+    ),
+    path_first_interpolation: $ => seq(
+      $._path_start_into_interpolation,
+      field('expression', $._expression),
+      '}'
+    ),
+
+    path: $ => choice(
+      $._nix_path,
+      $._path,
+    ),
 
     _expression: $ => choice(
       $.function,
@@ -168,8 +197,6 @@ module.exports = grammar({
       $.string,
       $.indented_string,
       $.path,
-      $.hpath,
-      $.spath,
       $.uri,
       $.parenthesized,
       $.attrset,
@@ -188,7 +215,7 @@ module.exports = grammar({
       '"',
       repeat(choice(
         $._string_fragment,
-        $.interpolation,
+        alias($.interpolation_immediate, $.interpolation),
         $.escape_sequence
       )),
       '"'
@@ -199,7 +226,7 @@ module.exports = grammar({
       "''",
       repeat(choice(
         $._indented_string_fragment,
-        $.interpolation,
+        alias($.interpolation_immediate, $.interpolation),
         alias($.indented_escape_sequence, $.escape_sequence),
       )),
       "''"
@@ -231,6 +258,7 @@ module.exports = grammar({
     ))),
 
     interpolation: $ => seq('${', field('expression', $._expression), '}'),
+    interpolation_immediate: $ => seq(token.immediate('${'), field('expression', $._expression), '}'),
 
     list: $ => seq('[', repeat(field('element', $._select_expression)), ']'),
 

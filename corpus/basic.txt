@@ -315,7 +315,7 @@ attr set
         (attr_identifier)
         (attr_identifier)
         (attr_identifier))
-      (spath))))
+      (path))))
 
 ================================================================================
 select
