@@ -22,7 +22,7 @@ ${bob} likes crisp $ bills. escape newline \
 (source_expression
   (string
     (interpolation
-      (identifier))
+      (variable))
     (escape_sequence)
     (escape_sequence)))
 
@@ -60,7 +60,7 @@ This works, too:  ''$
     (escape_sequence)
     (escape_sequence)
     (interpolation
-      (identifier))
+      (variable))
     (escape_sequence)))
 
 ================================================================================
@@ -85,11 +85,11 @@ string ($)
       (escape_sequence))
     (string
       (interpolation
-        (identifier)))
+        (variable)))
     (string)
     (string
       (interpolation
-        (identifier)))
+        (variable)))
     (string)))
 
 ================================================================================
@@ -114,11 +114,11 @@ indented string ($)
       (escape_sequence))
     (indented_string
       (interpolation
-        (identifier)))
+        (variable)))
     (indented_string)
     (indented_string
       (interpolation
-        (identifier)))
+        (variable)))
     (indented_string)))
 
 ================================================================================
@@ -132,7 +132,7 @@ unterminated string
 (source_expression
   (string
     (interpolation
-      (identifier))
+      (variable))
     (escape_sequence)
     (MISSING """)))
 
@@ -145,6 +145,6 @@ unterminated string escape
 
 (ERROR
   (interpolation
-    (identifier))
+    (variable))
   (escape_sequence)
   (UNEXPECTED '\0'))

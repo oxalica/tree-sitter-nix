@@ -77,36 +77,36 @@ absolute path interpolation
   (list
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 relative path interpolation
@@ -129,36 +129,36 @@ relative path interpolation
   (list
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 home path interpolation
@@ -181,36 +181,36 @@ home path interpolation
   (list
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier)))
+        (variable)))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 path and division
@@ -294,17 +294,17 @@ path trailing slash
       (path_trailing_slash))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (path_trailing_slash))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (path_trailing_slash))
     (path
       (interpolation
-        (identifier))
+        (variable))
       (interpolation
-        (identifier))
+        (variable))
       (path_trailing_slash))))
 
 ================================================================================

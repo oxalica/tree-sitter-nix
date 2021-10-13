@@ -33,7 +33,7 @@ attrset typing field
         (identifier))
       (function
         (identifier)
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 attrset typing field following string
@@ -100,7 +100,7 @@ attrset typing attrpath
         (identifier))
       (function
         (identifier)
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 attrset missing value
@@ -130,7 +130,7 @@ attrset missing value
       (attrpath
         (identifier))
       (app
-        (identifier)
+        (variable)
         (ERROR)
         (attrset)))
     (bind
@@ -138,7 +138,7 @@ attrset missing value
         (identifier))
       (function
         (identifier)
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 bind typing parenthesis
@@ -172,14 +172,14 @@ bind typing parenthesis
       (ERROR
         (function
           (identifier)
-          (identifier)))
+          (variable)))
       (attrset))
     (bind
       (attrpath
         (identifier))
       (function
         (identifier)
-        (identifier)))))
+        (variable)))))
 
 ================================================================================
 let typing field
@@ -216,7 +216,7 @@ in {}
         (identifier))
       (function
         (identifier)
-        (identifier)))
+        (variable)))
     (attrset)))
 
 ================================================================================
@@ -248,7 +248,7 @@ in
       (attrpath
         (identifier))
       (app
-        (identifier)
+        (variable)
         (ERROR)
         (attrset)))
     (bind
@@ -256,8 +256,8 @@ in
         (identifier))
       (function
         (identifier)
-        (identifier)))
-    (identifier)))
+        (variable)))
+    (variable)))
 
 ================================================================================
 let missing value (last)
@@ -286,5 +286,5 @@ in
       (attrpath
         (identifier)))
     (binary
-      (identifier)
-      (identifier))))
+      (variable)
+      (variable))))

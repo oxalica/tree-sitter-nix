@@ -191,7 +191,7 @@ module.exports = grammar({
     ),
 
     _primary_expression: $ => choice(
-      $.identifier,
+      alias($.identifier, $.variable),
       $.integer,
       $.float,
       $.string,

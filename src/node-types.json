@@ -32,10 +32,6 @@
         "named": true
       },
       {
-        "type": "identifier",
-        "named": true
-      },
-      {
         "type": "if",
         "named": true
       },
@@ -88,6 +84,10 @@
         "named": true
       },
       {
+        "type": "variable",
+        "named": true
+      },
+      {
         "type": "with",
         "named": true
       }
@@ -107,10 +107,6 @@
           },
           {
             "type": "float",
-            "named": true
-          },
-          {
-            "type": "identifier",
             "named": true
           },
           {
@@ -152,6 +148,10 @@
           {
             "type": "uri",
             "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
           }
         ]
       },
@@ -177,10 +177,6 @@
           },
           {
             "type": "has_attr",
-            "named": true
-          },
-          {
-            "type": "identifier",
             "named": true
           },
           {
@@ -225,6 +221,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -334,10 +334,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -379,6 +375,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -474,10 +474,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -519,6 +515,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -678,10 +678,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -723,6 +719,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -933,10 +933,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -974,6 +970,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -1066,10 +1066,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -1103,6 +1099,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -1120,10 +1120,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -1157,6 +1153,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -1227,10 +1227,6 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "indented_string",
             "named": true
           },
@@ -1272,6 +1268,10 @@
           },
           {
             "type": "uri",
+            "named": true
+          },
+          {
+            "type": "variable",
             "named": true
           }
         ]
@@ -1500,6 +1500,10 @@
   },
   {
     "type": "uri",
+    "named": true
+  },
+  {
+    "type": "variable",
     "named": true
   },
   {

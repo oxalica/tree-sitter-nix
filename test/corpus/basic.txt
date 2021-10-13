@@ -26,7 +26,7 @@ abc
 --------------------------------------------------------------------------------
 
 (source_expression
-  (identifier))
+  (variable))
 
 ================================================================================
 integer
@@ -82,7 +82,7 @@ list
 
 (source_expression
   (list
-    (identifier)
+    (variable)
     (integer)
     (float)))
 
@@ -96,9 +96,9 @@ if a then b else c
 
 (source_expression
   (if
-    (identifier)
-    (identifier)
-    (identifier)))
+    (variable)
+    (variable)
+    (variable)))
 
 ================================================================================
 assert
@@ -110,8 +110,8 @@ assert a; b
 
 (source_expression
   (assert
-    (identifier)
-    (identifier)))
+    (variable)
+    (variable)))
 
 ================================================================================
 with
@@ -123,8 +123,8 @@ with a; b
 
 (source_expression
   (with
-    (identifier)
-    (identifier)))
+    (variable)
+    (variable)))
 
 ================================================================================
 let (empty)
@@ -136,7 +136,7 @@ let in a
 
 (source_expression
   (let
-    (identifier)))
+    (variable)))
 
 ================================================================================
 let (bind)
@@ -151,8 +151,8 @@ let a = b; in c
     (bind
       (attrpath
         (identifier))
-      (identifier))
-    (identifier)))
+      (variable))
+    (variable)))
 
 ================================================================================
 let (bind, comments)
@@ -175,14 +175,14 @@ let
     (bind
       (attrpath
         (identifier))
-      (identifier))
+      (variable))
     (comment)
     (bind
       (attrpath
         (identifier))
-      (identifier))
+      (variable))
     (comment)
-    (identifier)))
+    (variable)))
 
 ================================================================================
 let (inherit)
@@ -196,7 +196,7 @@ let inherit a; in c
   (let
     (inherit
       (identifier))
-    (identifier)))
+    (variable)))
 
 ================================================================================
 let (inherit from)
@@ -209,11 +209,11 @@ let inherit (a) b "c" ${d}; in 123
 (source_expression
   (let
     (inherit_from
-      (identifier)
+      (variable)
       (identifier)
       (string)
       (interpolation
-        (identifier)))
+        (variable)))
     (integer)))
 
 ================================================================================
@@ -227,7 +227,7 @@ a: b
 (source_expression
   (function
     (identifier)
-    (identifier)))
+    (variable)))
 
 ================================================================================
 function (with formals)
@@ -302,7 +302,7 @@ attr set
     (bind
       (attrpath
         (interpolation
-          (identifier)))
+          (variable)))
       (string))
     (bind
       (attrpath
@@ -325,14 +325,14 @@ u.v.${w}."x${y}z"
 
 (source_expression
   (select
-    (identifier)
+    (variable)
     (attrpath
       (identifier)
       (interpolation
-        (identifier))
+        (variable))
       (string
         (interpolation
-          (identifier))))))
+          (variable))))))
 
 ================================================================================
 application
@@ -345,7 +345,7 @@ a 1 2.0
 (source_expression
   (app
     (app
-      (identifier)
+      (variable)
       (integer))
     (float)))
 
@@ -360,11 +360,11 @@ foo.bar bar.baz
 (source_expression
   (app
     (select
-      (identifier)
+      (variable)
       (attrpath
         (identifier)))
     (select
-      (identifier)
+      (variable)
       (attrpath
         (identifier)))))
 
@@ -380,10 +380,10 @@ square 2 + -pi - 42.0
   (binary
     (binary
       (app
-        (identifier)
+        (variable)
         (integer))
       (unary
-        (identifier)))
+        (variable)))
     (float)))
 
 ================================================================================
@@ -409,11 +409,11 @@ foo ? field ? bar."baz".${bax}
 (source_expression
   (has_attr
     (has_attr
-      (identifier)
+      (variable)
       (attrpath
         (identifier)))
     (attrpath
       (identifier)
       (string)
       (interpolation
-        (identifier)))))
+        (variable)))))

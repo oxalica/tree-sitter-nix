@@ -39,9 +39,9 @@
 
 (escape_sequence) @string.escape
 
-; Identifier fallback
+; Variable reference
 
-(identifier) @variable
+(variable) @variable
 
 ; Field access
 
@@ -55,14 +55,14 @@
 ; Builtins
 
 ; Known builtins.
-((identifier) @variable.builtin
+((variable) @variable.builtin
  (#match? @variable.builtin "^(__currentSystem|__currentTime|__nixPath|__nixVersion|__storeDir|builtins)$"))
-((identifier) @function.builtin
+((variable) @function.builtin
  (#match? @function.builtin "^(__add|__addErrorContext|__all|__any|__appendContext|__attrNames|__attrValues|__bitAnd|__bitOr|__bitXor|__catAttrs|__compareVersions|__concatLists|__concatMap|__concatStringsSep|__deepSeq|__div|__elem|__elemAt|__fetchurl|__filter|__filterSource|__findFile|__foldl'|__fromJSON|__functionArgs|__genList|__genericClosure|__getAttr|__getContext|__getEnv|__hasAttr|__hasContext|__hashFile|__hashString|__head|__intersectAttrs|__isAttrs|__isBool|__isFloat|__isFunction|__isInt|__isList|__isPath|__isString|__langVersion|__length|__lessThan|__listToAttrs|__mapAttrs|__match|__mul|__parseDrvName|__partition|__path|__pathExists|__readDir|__readFile|__replaceStrings|__seq|__sort|__split|__splitVersion|__storePath|__stringLength|__sub|__substring|__tail|__toFile|__toJSON|__toPath|__toXML|__trace|__tryEval|__typeOf|__unsafeDiscardOutputDependency|__unsafeDiscardStringContext|__unsafeGetAttrPos|__valueSize|abort|baseNameOf|derivation|derivationStrict|dirOf|fetchGit|fetchMercurial|fetchTarball|fromTOML|import|isNull|map|placeholder|removeAttrs|scopedImport|throw|toString)$"))
 
 ; Display entire builtins path as builtin variable (ex. `builtins.filter` is highlighted as one long builtin)
 (select
-  expression: (identifier) @variable.builtin @_i
+  expression: (variable) @variable.builtin @_i
   attrpath: (attrpath
     (identifier) @variable.builtin)
   (#eq? @_i "builtins"))
@@ -70,17 +70,17 @@
 ; Render the last component of builtin paths as builtin function if is applied arguments.
 (app
   function: (select
-    expression: (identifier) @variable.builtin
+    expression: (variable) @variable.builtin
     attrpath: (attrpath
       (identifier) @function.builtin .)
     (#eq? @variable.builtin "builtins")))
 
 ; Special variables
 
-((identifier) @include (#eq? @include "import"))
-((identifier) @constant.builtin (#eq? @constant.builtin "null"))
-((identifier) @exception (#eq? @exception "throw"))
-((identifier) @boolean (#match? @boolean "^(true|false)$"))
+((variable) @include (#eq? @include "import"))
+((variable) @constant.builtin (#eq? @constant.builtin "null"))
+((variable) @exception (#eq? @exception "throw"))
+((variable) @boolean (#match? @boolean "^(true|false)$"))
 
 ; Function
 
