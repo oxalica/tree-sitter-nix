@@ -52,15 +52,6 @@
   attrpath: (attrpath
     (identifier) @property))
 
-; Function being applied, after builtin function
-
-(app
-  function: [
-    (identifier) @function
-    (select
-      attrpath: (attrpath
-        (identifier) @function .))])
-
 ; Builtins
 
 ; Known builtins.
