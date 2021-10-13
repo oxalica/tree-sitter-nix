@@ -44,7 +44,7 @@ let
     #       ^ variable
 
     inherit (foo) baz;
-    #        ^ variable
+    #        ^ field
     #             ^ property
   };
   # <- punctuation.bracket
@@ -57,11 +57,12 @@ let
     # <- variable
     # ^ field
 
-    body.foo = body.foo;
+    body.foo = let body = 42; in body.foo;
     # <- variable.builtin
     #    ^ field
-    #          ^ variable
-    #               ^ property
+    #              ^ variable
+    #                            ^ variable
+    #                                 ^ property
   };
 
 in

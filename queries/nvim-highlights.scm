@@ -4,6 +4,7 @@
 ;    which is opposite to tree-sitter's first-prior order.
 ;    https://github.com/tree-sitter/tree-sitter/issues/632
 ; 2. nvim-treesitter needs @none to clear string color inside interpolation.
+; 3. nvim-treesitter doesn't support `(#is-not? local)` yet.
 
 ; Keywords
 

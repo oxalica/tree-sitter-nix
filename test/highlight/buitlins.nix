@@ -18,4 +18,14 @@
   #                  ^ boolean
   #                        ^ function.builtin
   #                            ^ exception
+
+  (let builtins = {}; in true: [
+    true false builtins builtins.unknown
+    # ^ variable.parameter
+    #    ^ boolean
+    #          ^ variable
+    #                   ^ variable
+    # FIXME
+    #                            x property
+  ])
 ]

@@ -54,9 +54,9 @@
   (x: x)
   #^ variable.parameter
   # ^ punctuation.delimiter
-  #   ^ variable
+  #   ^ variable.parameter
 
-  (x@{ a, b ? a }: x)
+  (x@{ a, b ? a + c }: x)
   #^ variable.parameter
   # ^ punctuation.special
   #  ^ punctuation.bracket
@@ -64,7 +64,8 @@
   #     ^ punctuation.delimiter
   #       ^ variable.parameter
   #         ^ punctuation.delimiter
-  #           ^ variable
+  #           ^ variable.parameter
+  #               ^ variable
 
   ({ a, b ? a }@x: x)
   #  ^ variable.parameter
