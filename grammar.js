@@ -177,7 +177,7 @@ module.exports = grammar({
       field('attrpath', $.attrpath)
     )),
 
-    app: $ => seq(field('function', $._operator_expression), field('argument', $._primary_expression)),
+    app: $ => seq(field('function', $._operator_expression), field('argument', $._select_expression)),
 
     _select_expression: $ => choice(
       $.select,

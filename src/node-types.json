@@ -142,6 +142,10 @@
             "named": true
           },
           {
+            "type": "select",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
