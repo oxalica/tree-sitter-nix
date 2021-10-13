@@ -113,7 +113,7 @@ module.exports = grammar({
 
     assert: $ => seq('assert', field('condition', $._expression), ';', field('body', $._expression)),
     with: $ => seq('with', field('environment', $._expression), ';', field('body', $._expression)),
-    let: $ => seq('let', optional($._binds), 'in', field('body', $._expression)),
+    let: $ => seq('let', repeat($._bind_or_inherit), 'in', field('body', $._expression)),
 
     if: $ => seq('if', field('condition', $._expression), 'then', field('consequence', $._expression), 'else', field('alternative', $._expression)),
 
@@ -207,9 +207,9 @@ module.exports = grammar({
 
     parenthesized: $ => seq('(', field('expression', $._expression), ')'),
 
-    attrset: $ => seq('{', optional($._binds), '}'),
-    let_attrset: $ => seq('let', '{', optional($._binds), '}'),
-    rec_attrset: $ => seq('rec', '{', optional($._binds), '}'),
+    attrset: $ => seq('{', repeat($._bind_or_inherit), '}'),
+    let_attrset: $ => seq('let', '{', repeat($._bind_or_inherit), '}'),
+    rec_attrset: $ => seq('rec', '{', repeat($._bind_or_inherit), '}'),
 
     string: $ => seq(
       '"',
@@ -233,29 +233,24 @@ module.exports = grammar({
     ),
     indented_escape_sequence: $ => token.immediate(/'''|''\$|''\\(.|\s)/), // Can also escape newline.
 
-    _binds: $ => repeat1(field('bind', choice($.bind, $.inherit, $.inherit_from))),
+    _bind_or_inherit: $ => field('bind', choice($.bind, $.inherit, $.inherit_from)),
     bind: $ => seq(field('attrpath', $.attrpath), '=', field('expression', $._expression), ';'),
-    inherit: $ => seq('inherit', field('attrs', $.attrs_inherited), ';'),
-    inherit_from: $ =>
-      seq('inherit', '(', field('expression', $._expression), ')', field('attrs', $.attrs_inherited_from), ';'),
+    inherit: $ => seq('inherit', repeat(field('attr', $._attr)), ';'),
+    inherit_from: $ => seq(
+      'inherit',
+      '(',
+      field('expression', $._expression),
+      ')',
+      repeat(field('attr', $._attr)),
+      ';'
+    ),
 
-    attrpath: $ => sep1(field('attr', choice(
-      alias($.identifier, $.attr_identifier),
-      $.string,
-      $.interpolation,
-    )), "."),
-
-    attrs_inherited: $ => repeat1(field('attr', choice(
+    attrpath: $ => sep1(field('attr', $._attr), "."),
+    _attr: $ => choice(
       $.identifier,
       $.string,
-      $.interpolation,
-    ))),
-
-    attrs_inherited_from: $ => repeat1(field('attr', choice(
-      alias($.identifier, $.attr_identifier),
-      $.string,
-      $.interpolation,
-    ))),
+      $.interpolation
+    ),
 
     interpolation: $ => seq('${', field('expression', $._expression), '}'),
     interpolation_immediate: $ => seq(token.immediate('${'), field('expression', $._expression), '}'),

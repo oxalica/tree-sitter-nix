@@ -150,7 +150,7 @@ let a = b; in c
   (let
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (identifier))
     (identifier)))
 
@@ -174,12 +174,12 @@ let
     (comment)
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (identifier))
     (comment)
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (identifier))
     (comment)
     (identifier)))
@@ -195,8 +195,7 @@ let inherit a; in c
 (source_expression
   (let
     (inherit
-      (attrs_inherited
-        (identifier)))
+      (identifier))
     (identifier)))
 
 ================================================================================
@@ -211,11 +210,10 @@ let inherit (a) b "c" ${d}; in 123
   (let
     (inherit_from
       (identifier)
-      (attrs_inherited_from
-        (attr_identifier)
-        (string)
-        (interpolation
-          (identifier))))
+      (identifier)
+      (string)
+      (interpolation
+        (identifier)))
     (integer)))
 
 ================================================================================
@@ -299,7 +297,7 @@ attr set
   (attrset
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
@@ -312,9 +310,9 @@ attr set
       (float))
     (bind
       (attrpath
-        (attr_identifier)
-        (attr_identifier)
-        (attr_identifier))
+        (identifier)
+        (identifier)
+        (identifier))
       (path))))
 
 ================================================================================
@@ -329,7 +327,7 @@ u.v.${w}."x${y}z"
   (select
     (identifier)
     (attrpath
-      (attr_identifier)
+      (identifier)
       (interpolation
         (identifier))
       (string
@@ -394,9 +392,9 @@ foo ? field ? bar."baz".${bax}
     (has_attr
       (identifier)
       (attrpath
-        (attr_identifier)))
+        (identifier)))
     (attrpath
-      (attr_identifier)
+      (identifier)
       (string)
       (interpolation
         (identifier)))))

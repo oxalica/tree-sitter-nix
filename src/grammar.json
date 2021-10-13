@@ -541,16 +541,11 @@
           "value": "let"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_binds"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_bind_or_inherit"
+          }
         },
         {
           "type": "STRING",
@@ -1382,16 +1377,11 @@
           "value": "{"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_binds"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_bind_or_inherit"
+          }
         },
         {
           "type": "STRING",
@@ -1411,16 +1401,11 @@
           "value": "{"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_binds"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_bind_or_inherit"
+          }
         },
         {
           "type": "STRING",
@@ -1440,16 +1425,11 @@
           "value": "{"
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_binds"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_bind_or_inherit"
+          }
         },
         {
           "type": "STRING",
@@ -1552,28 +1532,25 @@
         "value": "'''|''\\$|''\\\\(.|\\s)"
       }
     },
-    "_binds": {
-      "type": "REPEAT1",
+    "_bind_or_inherit": {
+      "type": "FIELD",
+      "name": "bind",
       "content": {
-        "type": "FIELD",
-        "name": "bind",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "bind"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "inherit"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "inherit_from"
-            }
-          ]
-        }
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "bind"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "inherit"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "inherit_from"
+          }
+        ]
       }
     },
     "bind": {
@@ -1613,11 +1590,14 @@
           "value": "inherit"
         },
         {
-          "type": "FIELD",
-          "name": "attrs",
+          "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "attrs_inherited"
+            "type": "FIELD",
+            "name": "attr",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_attr"
+            }
           }
         },
         {
@@ -1650,11 +1630,14 @@
           "value": ")"
         },
         {
-          "type": "FIELD",
-          "name": "attrs",
+          "type": "REPEAT",
           "content": {
-            "type": "SYMBOL",
-            "name": "attrs_inherited_from"
+            "type": "FIELD",
+            "name": "attr",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_attr"
+            }
           }
         },
         {
@@ -1670,26 +1653,8 @@
           "type": "FIELD",
           "name": "attr",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "identifier"
-                },
-                "named": true,
-                "value": "attr_identifier"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "string"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "interpolation"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_attr"
           }
         },
         {
@@ -1705,26 +1670,8 @@
                 "type": "FIELD",
                 "name": "attr",
                 "content": {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "identifier"
-                      },
-                      "named": true,
-                      "value": "attr_identifier"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "string"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "interpolation"
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_attr"
                 }
               }
             ]
@@ -1732,58 +1679,22 @@
         }
       ]
     },
-    "attrs_inherited": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "FIELD",
-        "name": "attr",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "string"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "interpolation"
-            }
-          ]
+    "_attr": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "interpolation"
         }
-      }
-    },
-    "attrs_inherited_from": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "FIELD",
-        "name": "attr",
-        "content": {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "identifier"
-              },
-              "named": true,
-              "value": "attr_identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "string"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "interpolation"
-            }
-          ]
-        }
-      }
+      ]
     },
     "interpolation": {
       "type": "SEQ",

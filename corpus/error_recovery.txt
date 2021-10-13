@@ -16,21 +16,21 @@ attrset typing field
   (attrset
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (ERROR
         (identifier))
       (attrset))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))))
@@ -53,15 +53,15 @@ attrset typing field following string
       (identifier))
     (bind
       (attrpath
-        (attr_identifier)
-        (attr_identifier)
-        (attr_identifier))
+        (identifier)
+        (identifier)
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier)
-        (attr_identifier)
-        (attr_identifier))
+        (identifier)
+        (identifier)
+        (identifier))
       (string))))
 
 ================================================================================
@@ -82,22 +82,22 @@ attrset typing attrpath
   (attrset
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
-        (attr_identifier)
-        (attr_identifier))
+        (identifier)
+        (identifier))
       (ERROR
         (identifier))
       (attrset))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))))
@@ -120,22 +120,22 @@ attrset missing value
   (attrset
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (app
         (identifier)
         (ERROR)
         (attrset)))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))))
@@ -158,17 +158,17 @@ bind typing parenthesis
   (attrset
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (integer)))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (ERROR
         (function
           (identifier)
@@ -176,7 +176,7 @@ bind typing parenthesis
       (attrset))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))))
@@ -199,21 +199,21 @@ in {}
   (let
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (ERROR
         (identifier))
       (attrset))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))
@@ -238,22 +238,22 @@ in
   (let
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (app
         (identifier)
         (ERROR)
         (attrset)))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (function
         (identifier)
         (identifier)))
@@ -276,15 +276,15 @@ in
   (let
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (string))
     (bind
       (attrpath
-        (attr_identifier))
+        (identifier))
       (integer))
     (ERROR
       (attrpath
-        (attr_identifier)))
+        (identifier)))
     (binary
       (identifier)
       (identifier))))
