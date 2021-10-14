@@ -5,6 +5,7 @@
 ;    https://github.com/tree-sitter/tree-sitter/issues/632
 ; 2. nvim-treesitter needs @none to clear string color inside interpolation.
 ; 3. nvim-treesitter doesn't support `(#is-not? local)` yet.
+; 4. Interpolation and escapes need to set priority to override injected languages.
 
 ; Keywords
 
@@ -38,7 +39,8 @@
 (path_trailing_slash) @error
 (uri) @string.special ; Or @text.uri?
 
-(escape_sequence) @string.escape
+; Override injected languages.
+(escape_sequence (#set! "priority" 105)) @string.escape
 
 ; Variable reference
 
@@ -173,5 +175,7 @@
   "}"
 ] @punctuation.bracket
 
-(interpolation
-  [ "${" "}" ] @punctuation.special) @none
+(interpolation) @none
+; Override injected languages.
+((interpolation ["${" "}"] @punctuation.special)
+  (#set! "priority" 105))
