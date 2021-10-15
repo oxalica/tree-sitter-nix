@@ -2,7 +2,7 @@
 
 (bind
   attrpath: ((attrpath) @_path
-    (#match? @_path "^([a-z]+Phase|(pre|post)([A-Z][a-z]+)+)$"))
+    (#match? @_path "^([a-z][A-Za-z]*Phase|(pre|post)[A-Z][A-Za-z]*)$"))
   expression: [
     (indented_string) @bash
     (if (indented_string) @bash)
