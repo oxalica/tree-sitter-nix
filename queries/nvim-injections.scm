@@ -1,8 +1,8 @@
-; Phases and hooks of stdenv
+; Common field names containg bash script.
 
 (bind
   attrpath: ((attrpath) @_path
-    (#match? @_path "^([a-z][A-Za-z]*Phase|(pre|post)[A-Z][A-Za-z]*)$"))
+    (#match? @_path "^([a-z][A-Za-z]*Phase|(pre|post)[A-Z][A-Za-z]*|(.*\\.)?script)$"))
   expression: [
     (indented_string) @bash
     (if (indented_string) @bash)
