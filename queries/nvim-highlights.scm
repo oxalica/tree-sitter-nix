@@ -36,7 +36,7 @@
 [ (string) (indented_string) ] @string
 
 (path) @string.special
-(path_trailing_slash) @error
+(path_invalid_slash) @error
 (uri) @string.special ; Or @text.uri?
 
 ; Override injected languages.

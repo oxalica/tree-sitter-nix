@@ -21,10 +21,9 @@
 
   /${foo}
   # <- string.special
+  # ^ punctuation.special
   #  ^ variable
   #     ^ punctuation.special
-  # FIXME
-  # x punctuation.special
 
   https://example.com
   # <- string.special

@@ -1009,7 +1009,7 @@
           "named": true
         },
         {
-          "type": "path_trailing_slash",
+          "type": "path_invalid_slash",
           "named": true
         }
       ]
@@ -1487,7 +1487,7 @@
     "named": false
   },
   {
-    "type": "path_trailing_slash",
+    "type": "path_invalid_slash",
     "named": true
   },
   {

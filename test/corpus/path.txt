@@ -15,7 +15,7 @@ nix path
     (path)))
 
 ================================================================================
-absolute path
+absolute path simple
 ================================================================================
 
 [
@@ -35,7 +35,7 @@ absolute path
     (path)))
 
 ================================================================================
-relative path
+relative path simple
 ================================================================================
 
 [
@@ -270,7 +270,7 @@ path and update
         (integer)))))
 
 ================================================================================
-path trailing slash
+path invalid slash
 ================================================================================
 
 [
@@ -280,6 +280,7 @@ path trailing slash
   /${foo}/
   /${foo}/bar/
   /${foo}/bar/${baz}a/
+  ./foo//42/
 ]
 
 --------------------------------------------------------------------------------
@@ -287,25 +288,28 @@ path trailing slash
 (source_expression
   (list
     (path
-      (path_trailing_slash))
+      (path_invalid_slash))
     (path
-      (path_trailing_slash))
+      (path_invalid_slash))
     (path
-      (path_trailing_slash))
-    (path
-      (interpolation
-        (variable))
-      (path_trailing_slash))
+      (path_invalid_slash))
     (path
       (interpolation
         (variable))
-      (path_trailing_slash))
+      (path_invalid_slash))
+    (path
+      (interpolation
+        (variable))
+      (path_invalid_slash))
     (path
       (interpolation
         (variable))
       (interpolation
         (variable))
-      (path_trailing_slash))))
+      (path_invalid_slash))
+    (path
+      (path_invalid_slash)
+      (path_invalid_slash))))
 
 ================================================================================
 path root is invalid

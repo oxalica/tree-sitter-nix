@@ -1,15 +1,22 @@
 #include <tree_sitter/parser.h>
 #include <inttypes.h>
+#include <ctype.h>
 
 enum TokenType {
   STRING_FRAGMENT,
   INDENTED_STRING_FRAGMENT,
+  PATH_START,
   PATH_FRAGMENT,
-  PATH_TRAILING_SLASH,
+  PATH_INVALID_SLASH,
+  PATH_END,
 };
 
 static void advance(TSLexer *lexer) {
   lexer->advance(lexer, false);
+}
+
+static void skip(TSLexer *lexer) {
+  lexer->advance(lexer, true);
 }
 
 // Here we only parse literal fragment inside a string.
@@ -86,8 +93,51 @@ static bool is_valid_path_char(int32_t c) {
     c == '.' || c == '_' || c == '+' || c == '-';
 }
 
+// Indicate starting of a path, spanning the first segment including `/`.
+//
+// `~/f`, `/f`, `foo/f`, `~/${`, `/${`, `foo/${`
+//  ^^     ^     ^^^^     ^^      ^      ^^^^
+static bool scan_path_start(TSLexer *lexer) {
+  lexer->result_symbol = PATH_START;
+
+  while (iswspace(lexer->lookahead)) {
+    skip(lexer);
+  }
+
+  // The first segment must be `~/`, `/`, or any number of path chars followed by `/`.
+  if (lexer->lookahead == '~') {
+    advance(lexer);
+  } else {
+    while (is_valid_path_char(lexer->lookahead)) {
+      advance(lexer);
+    }
+  }
+  if (lexer->lookahead != '/') {
+    return false;
+  }
+  advance(lexer);
+  lexer->mark_end(lexer);
+
+  // The second segment must starts with `${` or any valid path chars.
+  if (lexer->lookahead == '$') {
+    advance(lexer);
+    if (lexer->lookahead == '{') {
+      return true;
+    }
+  } else if (is_valid_path_char(lexer->lookahead)) {
+    return true;
+  }
+  return false;
+}
+
+// A valid path fragment, end of path, or a parsable but invalid slash.
+//
+// Valid path fragment: `/` following `${`, or simply `/any_valid_chars` or `any_valid_chars`
+// Invalid slash: `/` follows any invalid character other than `${`, which only appears as
+//                trailing slash or redundant slash.
+// End of path: Zero sized token if any invalid character other than `${` follows.
+// Otherwise, it returns false (including an immediate `${`).
 static bool scan_path_fragment(TSLexer *lexer) {
-  bool has_content = false;
   lexer->result_symbol = PATH_FRAGMENT;
 
   // Process '/' only at the start.
@@ -96,31 +146,36 @@ static bool scan_path_fragment(TSLexer *lexer) {
   if (lexer->lookahead == '/') {
     advance(lexer);
     lexer->mark_end(lexer);
+    if (!is_valid_path_char(lexer->lookahead)) {
+      if (lexer->lookahead == '$') {
+        advance(lexer);
+        if (lexer->lookahead == '{') {
+          return true;
+        }
+      }
+      lexer->result_symbol = PATH_INVALID_SLASH;
+      return true;
+    }
+  } else if (!is_valid_path_char(lexer->lookahead)) {
+    // If a `${` follows, leave it for the internal lexer to start an interpolation.
     if (lexer->lookahead == '$') {
+      lexer->mark_end(lexer);
       advance(lexer);
       if (lexer->lookahead == '{') {
-        return true;
+        return false;
       }
-      lexer->result_symbol = PATH_TRAILING_SLASH;
-      return true;
-    } else if (!is_valid_path_char(lexer->lookahead)) {
-      lexer->result_symbol = PATH_TRAILING_SLASH;
-      return true;
     }
-
-    // A valid path character follows. Continue processing.
-    has_content = true;
+    // Otherwise, it's the end of a path. Exit the path state.
+    // This would not cause dead-loop since we won't scan path fragment outside the path.
+    lexer->result_symbol = PATH_END;
+    return true;
   }
 
-  for (;; has_content = true) {
-    lexer->mark_end(lexer);
-    if (is_valid_path_char(lexer->lookahead)) {
-      advance(lexer);
-    } else {
-      // Here we stop on '${' and '/', which can be handled in parse or next call to `scan_path_fragment`.
-      return has_content;
-    }
+  // Here must be at least one valid path character follows.
+  while (is_valid_path_char(lexer->lookahead)) {
+    advance(lexer);
   }
+  return true;
 }
 
 void *tree_sitter_nix_external_scanner_create() {
@@ -129,20 +184,17 @@ void *tree_sitter_nix_external_scanner_create() {
 
 bool tree_sitter_nix_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
-  // This never happens in valid grammar. Only during error recovery, everything becomes valid.
+  // Path is a basic token which can be parsed even during error recovery. It should goes first.
+  // Note that during error recovery, everything becomes valid.
   // See: https://github.com/tree-sitter/tree-sitter/issues/1259
-  //
-  // We should not consume any content as string fragment during error recovery, or we'll break
-  // more valid grammar below.
-  // The test 'attrset typing field following string' covers this.
-  if (valid_symbols[STRING_FRAGMENT] && valid_symbols[INDENTED_STRING_FRAGMENT]) {
-    return false;
+  if (valid_symbols[PATH_START]) {
+    return scan_path_start(lexer);
+  } else if (valid_symbols[PATH_FRAGMENT] || valid_symbols[PATH_END] || valid_symbols[PATH_INVALID_SLASH]) {
+    return scan_path_fragment(lexer);
   } else if (valid_symbols[STRING_FRAGMENT]) {
     return scan_string_fragment(lexer);
   } else if (valid_symbols[INDENTED_STRING_FRAGMENT]) {
     return scan_indented_string_fragment(lexer);
-  } else if (valid_symbols[PATH_FRAGMENT] || valid_symbols[PATH_TRAILING_SLASH]) {
-    return scan_path_fragment(lexer);
   }
 
   return false;

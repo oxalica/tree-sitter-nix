@@ -34,34 +34,12 @@
       "type": "PATTERN",
       "value": "<[a-zA-Z0-9\\._\\-\\+]+(\\/[a-zA-Z0-9\\._\\-\\+]+)*>"
     },
-    "_path_start": {
-      "type": "PATTERN",
-      "value": "(\\~|[a-zA-Z0-9\\._\\-\\+]+)?\\/[a-zA-Z0-9\\._\\-\\+]+"
-    },
-    "_path_start_into_interpolation": {
-      "type": "PATTERN",
-      "value": "(\\~|[a-zA-Z0-9\\._\\-\\+]+)?\\/\\$\\{"
-    },
     "_path": {
       "type": "SEQ",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "_path_start"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "path_first_interpolation"
-              },
-              "named": true,
-              "value": "interpolation"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_path_start"
         },
         {
           "type": "REPEAT",
@@ -80,42 +58,17 @@
               {
                 "type": "SYMBOL",
                 "name": "_path_fragment"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "path_invalid_slash"
               }
             ]
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "path_trailing_slash"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "path_first_interpolation": {
-      "type": "SEQ",
-      "members": [
-        {
           "type": "SYMBOL",
-          "name": "_path_start_into_interpolation"
-        },
-        {
-          "type": "FIELD",
-          "name": "expression",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_expression"
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "}"
+          "name": "_path_end"
         }
       ]
     },
@@ -1899,11 +1852,19 @@
     },
     {
       "type": "SYMBOL",
+      "name": "_path_start"
+    },
+    {
+      "type": "SYMBOL",
       "name": "_path_fragment"
     },
     {
       "type": "SYMBOL",
-      "name": "path_trailing_slash"
+      "name": "path_invalid_slash"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_path_end"
     }
   ],
   "inline": [],
