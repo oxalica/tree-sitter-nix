@@ -830,12 +830,12 @@
           }
         ]
       },
-      "expression": {
+      "from": {
         "multiple": false,
         "required": true,
         "types": [
           {
-            "type": "_expression",
+            "type": "parenthesized",
             "named": true
           }
         ]

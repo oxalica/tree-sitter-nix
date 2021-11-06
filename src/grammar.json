@@ -1572,20 +1572,12 @@
           "value": "inherit"
         },
         {
-          "type": "STRING",
-          "value": "("
-        },
-        {
           "type": "FIELD",
-          "name": "expression",
+          "name": "from",
           "content": {
             "type": "SYMBOL",
-            "name": "_expression"
+            "name": "parenthesized"
           }
-        },
-        {
-          "type": "STRING",
-          "value": ")"
         },
         {
           "type": "REPEAT",

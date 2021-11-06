@@ -227,9 +227,7 @@ module.exports = grammar({
     inherit: $ => seq('inherit', repeat(field('attr', $._attr)), ';'),
     inherit_from: $ => seq(
       'inherit',
-      '(',
-      field('expression', $._expression),
-      ')',
+      field('from', $.parenthesized),
       repeat(field('attr', $._attr)),
       ';'
     ),

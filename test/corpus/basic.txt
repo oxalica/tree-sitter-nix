@@ -209,7 +209,8 @@ let inherit (a) b "c" ${d}; in 123
 (source_expression
   (let
     (inherit_from
-      (variable)
+      (parenthesized
+        (variable))
       (identifier)
       (string)
       (interpolation
