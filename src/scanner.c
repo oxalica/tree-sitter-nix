@@ -1,6 +1,6 @@
 #include <tree_sitter/parser.h>
 #include <inttypes.h>
-#include <ctype.h>
+#include <wctype.h>
 
 enum TokenType {
   STRING_FRAGMENT,
@@ -87,10 +87,7 @@ static bool scan_indented_string_fragment(TSLexer *lexer) {
 }
 
 static bool is_valid_path_char(int32_t c) {
-  return 'a' <= c && c <= 'z' ||
-    'A' <= c && c <= 'Z' ||
-    '0' <= c && c <= '9' ||
-    c == '.' || c == '_' || c == '+' || c == '-';
+  return iswalnum(c) || c == '.' || c == '_' || c == '+' || c == '-';
 }
 
 // Indicate starting of a path, spanning the first segment including `/`.
