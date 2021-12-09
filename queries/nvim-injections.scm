@@ -109,6 +109,16 @@
         (binary (indented_string) @content)
         (app argument: (indented_string) @content)])]
   (#offset! @content 0 2 0 -2))
+(
+  ((comment) @_language (#any-of? @_language "# lua" "/* lua */") (#set! "language" "lua")) .
+  [
+    ((indented_string) @content)
+    (bind
+      expression: [
+        (indented_string) @content
+        (binary (indented_string) @content)
+        (app argument: (indented_string) @content)])]
+  (#offset! @content 0 2 0 -2))
 
 ; Reverse inject interpolation to override other injected languages.
 ; I cannot find other way to correctly highlight interpolations inside injected string.
